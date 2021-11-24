@@ -11,11 +11,11 @@ import Foundation
 struct Card {
     var isFacedUp = false
     var isMatched = false
-    var identifier: Int
+    private var identifier: Int
     
-    static var indetifierFactory = 0
+    private static var indetifierFactory = 0
     
-    static func getUniqueIdentifier() -> Int {
+    private static func getUniqueIdentifier() -> Int {
         Card.indetifierFactory += 1
         return Card.indetifierFactory
     }
@@ -24,4 +24,16 @@ struct Card {
         self.identifier = Card.getUniqueIdentifier()
     }
     
+}
+
+extension Card: Hashable, Equatable {
+    var hashValue: Int {return identifier}
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
+    
+    static func ==(lhs: Card, rhs: Card) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
 }
